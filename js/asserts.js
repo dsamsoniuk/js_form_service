@@ -24,7 +24,7 @@ class AssertNotBlank extends AssertAbstract {
         this.message = message ?? 'This field can not be empty'
     }
     /**
-     * @param {string} value
+     * @param {File} value
      * @return {boolean}
      */
     validate(value){

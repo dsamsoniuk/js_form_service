@@ -56,3 +56,34 @@ if (formValidator.validate(form)) {
 
 formError.showErrors(form, formElement)
 ```
+
+
+### Customr assert create
+
+Required only `extends AssertAbstract`
+
+```js
+/** Assert - Not empty field */
+class AssertNotBlank extends AssertAbstract {
+    /**
+     * @param {string} message 
+     */
+    constructor(message){
+        super()
+        this.message = message ?? 'This field can not be empty'
+    }
+    /**
+     * @param {string} value
+     * @return {boolean}
+     */
+    validate(value){
+        return value === null || value === '' || value === undefined ? false : true
+    }
+    /**
+     * @return {string}
+     */
+    getMessage() {
+        return this.message
+    }
+}
+```
