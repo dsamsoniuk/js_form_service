@@ -24,30 +24,30 @@ class FormCollection {
 class FormMapper {
 
     groupToTree(list) {
-        list += '[setValue]'
-
         const root = {};
-        const keys = list
-            .replace(/\]/g, '')
-            .split('[');
-
+        const keys = list.replace(/\]/g, '').split('[');
         let current = root;
 
         keys.forEach((key, i) => {
-            if (!current[key]) current[key] = {};
+            if (!current[key]) {
+                current[key] = {};
+            }
             current = current[key];
         });
         return root;
     }
-
+    buildStepIndex(stepsIndex, name){
+        return stepsIndex == '' ? name : '[' + name +']'
+    }
     tree(form, branch, params = null, callback = function(){}){
 
-        if (form instanceof FieldType && branch && typeof branch.setValue === 'object') {
+        if (form instanceof FieldType) {
             return callback(form, params)
 
         }  else if (form instanceof FormAbstract) {
             for (let prop in form) {
                 if (branch[prop]) {
+                    params.stepsIndex += this.buildStepIndex(params.stepsIndex, prop)
                     form[prop] = this.tree(form[prop], branch[prop], params, callback)
                 }
             }
@@ -57,6 +57,7 @@ class FormMapper {
                 if (form.data[i] === undefined) {
                     form.data[i] = form.createObject()
                 }
+                params.stepsIndex += this.buildStepIndex(params.stepsIndex, i)
                 form.data[i] = this.tree(form.data[i], branch[i], params, callback)
             }
         }
@@ -69,12 +70,14 @@ class FormMapper {
 
             let params = {
                 'value': formData.get(prop),
-                'fieldName': prop
+                'fieldName': prop,
+                'stepsIndex': '',
             }
-
             this.tree(form, branch, params, function(field, data){
-                field.value = data.value
-                field.fieldName = data.fieldName
+                if (params.stepsIndex === params.fieldName) {
+                    field.value = data.value
+                    field.fieldName = data.fieldName
+                }
                 return field
             })
         }
@@ -161,7 +164,7 @@ class FormErrorService extends FormErrorAbstract {
 
     showError(field, data){
         
-        if (field.error === null || field.error === undefined || field.error.length == 0) {
+        if (field.error === undefined || field.error === null || field.error.length == 0) {
             return field
         }
 

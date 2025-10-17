@@ -135,6 +135,7 @@ class SubmitFormEvent extends EventAbstract {
         } else {
             print('Nie waliduje')
         }
+        console.log(this.form)
 
         this.formErrorService.showErrors(this.form, this.formElement)
     }
