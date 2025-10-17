@@ -38,3 +38,41 @@ class AssertNotBlank extends AssertAbstract {
     }
 }
 
+/** Assert - Not empty field */
+class AssertFileRequired extends AssertAbstract {
+    /**
+     * @param {string} message 
+     */
+    constructor(message, messageFormat, allowFormats){
+        super()
+        this.message = message ?? 'This file is required'
+        this.messageFormat = messageFormat ?? 'Wrong format file, allowed: ' + allowFormats.join(', ')
+        this.allowFormats = allowFormats ?? []
+    }
+    /**
+     * @param {string} value
+     * @return {boolean}
+     */
+    validate(value){
+        if (value instanceof File === false) {
+            return false;
+        }
+        let fileExists = value.name != '' ? true : false
+        if (fileExists === false) {
+            return false
+        }
+        let allowFormats = (this.allowFormats == [] ? true : (this.allowFormats.includes(value.type) ? true : false))
+        if (allowFormats === false) {
+            this.message = this.messageFormat
+            return false
+        }
+        return true
+    }
+    /**
+     * @return {string}
+     */
+    getMessage() {
+        return this.message
+    }
+}
+

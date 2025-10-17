@@ -18,16 +18,12 @@ class AddressForm extends FormAbstract {
     "email" = new FieldType([new AssertNotBlank()])
 }
 class CustomerForm extends FormAbstract {
-    "id" = new FieldType([
-        new AssertNotBlank('Custom error example')
-    ])
-    "name" = new FieldType([
-        new AssertNotBlank(),
-        new AssertNotBlank()
-    ])
-    "address" = new FormCollection(AddressForm) 
+    "id" = new FieldType([new AssertNotBlank('Custom error example')])
+    "name" = new FieldType([new AssertNotBlank(),])
+    "option" = new FieldType([new AssertNotBlank()])
+    "address" = new FormCollection(AddressForm)
     "files" = new FormCollection(FieldType, [
-        new AssertNotBlank()
+        new AssertFileRequired(null, null, ['image/png', 'image/jpg']),
     ]) 
 }
 class CustomerFormBuilder extends FormAbstract {

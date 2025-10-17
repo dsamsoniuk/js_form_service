@@ -19,6 +19,15 @@
         <input id="customerName" type="text" name="customer[name]" id="">
     </div>
 
+    <div>
+        <label for="">Opcja test</label>
+        <select name="customer[option]" id="">
+            <option value=""></option>
+            <option value="option1">option1</option>
+            <option value="option2">option2</option>
+        </select>
+    </div>
+
     <h3>Address</h3>
 
 
@@ -55,7 +64,7 @@
     <protptyp-field style="display:none">
         <label>File ({{index}}):</label>
         <div>
-            <input type="text" name="customer[files][{{index}}]" value="">
+            <input type="file" name="customer[files][{{index}}]" value="">
         </div>
     </protptyp-field>
 
@@ -73,6 +82,7 @@
  <script src="js/event.js"></script> 
  <script src="js/template_builder.js"></script> 
  <script src="js/form_builder.js"></script> 
+ <!-- <script src="cnd.js"></script>  -->
 
 <script>
 
@@ -87,13 +97,11 @@ class CustomerForm extends FormAbstract {
     "id" = new FieldType([
         new AssertNotBlank('Custom error example')
     ])
-    "name" = new FieldType([
-        new AssertNotBlank(),
-        new AssertNotBlank()
-    ])
-    "address" = new FormCollection(AddressForm) 
+    "name" = new FieldType([new AssertNotBlank(),])
+    "option" = new FieldType([new AssertNotBlank()])
+    "address" = new FormCollection(AddressForm)
     "files" = new FormCollection(FieldType, [
-        new AssertNotBlank()
+        new AssertFileRequired(null, null, ['image/png', 'image/jpg']),
     ]) 
 }
 class CustomerFormBuilder extends FormAbstract {
@@ -153,7 +161,7 @@ class SubmitFormEvent extends EventAbstract {
 
         this.form = this.formMapper.setFormData(this.form, formData)
         this.errorService.clear(this.formElement)
-           
+           console.log(this.form)
         if (this.formValidator.validate(this.form)) {
             console.log('Formularz poprawny')
             return
