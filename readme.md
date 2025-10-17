@@ -3,7 +3,9 @@
 
 ### Obsluga formularza w vanilly js, walidacja prototypy pol - calosc napisana objektowo 
 
-### Run server:
+Example how it works, you can see in index.php file.
+
+### Run simple server:
 
 ```
 php -S 127.0.0.1:80
@@ -71,19 +73,18 @@ formError.showErrors(form, formElement)
 ```
 
 
-### Customr assert create
+### Custom assert create
 
 Required only `extends AssertAbstract`
 
 ```js
-/** Assert - Not empty field */
 class AssertNotBlank extends AssertAbstract {
     /**
      * @param {string} message 
      */
     constructor(message){
-        super()
-        this.message = message ?? 'This field can not be empty'
+        message = message ?? 'This field can not be empty'
+        super(message)
     }
     /**
      * @param {string} value
@@ -91,12 +92,6 @@ class AssertNotBlank extends AssertAbstract {
      */
     validate(value){
         return value === null || value === '' || value === undefined ? false : true
-    }
-    /**
-     * @return {string}
-     */
-    getMessage() {
-        return this.message
     }
 }
 ```
