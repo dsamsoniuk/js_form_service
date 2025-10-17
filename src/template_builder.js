@@ -19,7 +19,7 @@ class TemplateService extends TemplateServiceAbstract {
      * @returns 
      */
     search(key){
-        return `{{${key}}}`
+        return `{+${key}+}`
     }
 
     /**

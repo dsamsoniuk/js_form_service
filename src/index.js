@@ -22,7 +22,8 @@ class AssertNotBlank extends AssertAbstract {
     /**
      * @param {string} message 
      */
-    constructor(message = 'This field can not be empty'){
+    constructor(message){
+        message = message ?? 'This field can not be empty'
         super(message)
     }
     /**
@@ -39,7 +40,8 @@ class AssertFileRequired extends AssertAbstract {
     /**
      * @param {string} message 
      */
-    constructor(message = 'This file is required', messageFormat = '', allowFormats = []){
+    constructor(message, messageFormat, allowFormats){
+        message = message ?? 'This file is required'
         super(message)
 
         this.messageFormat = messageFormat ?? 'Wrong format file'
@@ -74,7 +76,6 @@ class EventAbstract {
         }
     }
 }
-
 
 
 class FormAbstract {}
@@ -325,6 +326,9 @@ class FormErrorService extends FormErrorAbstract {
 
 
 
+/**
+ * Generator szablonow oraz nadpisywanie wartosci np. {+wartosc+}
+ */
 class TemplateServiceAbstract {
     constructor() {
         if (typeof this.render !== 'function') {
@@ -344,7 +348,7 @@ class TemplateService extends TemplateServiceAbstract {
      * @returns 
      */
     search(key){
-        return `{{${key}}}`
+        return `{+${key}+}`
     }
 
     /**

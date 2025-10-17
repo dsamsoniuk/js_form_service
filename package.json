@@ -1,0 +1,36 @@
+{
+  "name": "js_form_service",
+  "version": "1.0.0",
+  "description": "js form service",
+  "main": "cdn.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx terser src/index.js --compress --mangle --output dist/js-form-service.min.js",
+    "concat": "concat -o src/test.js src/asserts.js src/event.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsamsoniuk/js_form_service.git"
+  },
+  "sideEffects": true,
+  "keywords": [
+    "html",
+    "form",
+    "service"
+  ],
+  "author": "DamianS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dsamsoniuk/js_form_service/issues"
+  },
+  "homepage": "https://github.com/dsamsoniuk/js_form_service#readme",
+  "devDependencies": {
+    "concat-cli": "^4.0.0",
+    "esbuild": "^0.25.11",
+    "rollup": "^2.79.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "terser": "^5.44.0",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1"
+  }
+}

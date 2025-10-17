@@ -62,9 +62,9 @@
     <button type="button" id="cloneButton">Attache file</button><br>
 
     <protptyp-field style="display:none">
-        <label>File ({{index}}):</label>
+        <label>File ({+index+}):</label>
         <div>
-            <input type="file" name="customer[files][{{index}}]" value="">
+            <input type="file" name="customer[files][{+index+}]" value="">
         </div>
     </protptyp-field>
 
@@ -77,12 +77,12 @@
 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
  
- <script src="js/utils.js"></script> 
+ <!-- <script src="js/utils.js"></script> 
  <script src="js/asserts.js"></script> 
  <script src="js/event.js"></script> 
  <script src="js/template_builder.js"></script> 
- <script src="js/form_builder.js"></script> 
- <!-- <script src="cnd.js"></script>  -->
+ <script src="js/form_builder.js"></script>  -->
+ <script src="dist/js-form-service.min.js"></script> 
 
 <script>
 
