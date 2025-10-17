@@ -62,9 +62,9 @@
     <button type="button" id="cloneButton">Attache file</button><br>
 
     <protptyp-field style="display:none">
-        <label>File ({+index+}):</label>
+        <label>File ({@index@}):</label>
         <div>
-            <input type="file" name="customer[files][{+index+}]" value="">
+            <input type="file" name="customer[files][{@index@}]" value="">
         </div>
     </protptyp-field>
 
@@ -77,17 +77,16 @@
 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
  
- <!-- <script src="js/utils.js"></script> 
- <script src="js/asserts.js"></script> 
- <script src="js/event.js"></script> 
- <script src="js/template_builder.js"></script> 
- <script src="js/form_builder.js"></script>  -->
+ <!-- <script src="src/asserts.js"></script> 
+ <script src="src/event.js"></script> 
+ <script src="src/template_builder.js"></script> 
+ <script src="src/form_builder.js"></script>  -->
+
+ <!-- <script src="index.package.js"></script>  -->
  <script src="dist/js-form-service.min.js"></script> 
 
+
 <script>
-
-
-
 
 class AddressForm extends FormAbstract {
     "phone" = new FieldType([new AssertNotBlank()])
@@ -97,7 +96,7 @@ class CustomerForm extends FormAbstract {
     "id" = new FieldType([
         new AssertNotBlank('Custom error example')
     ])
-    "name" = new FieldType([new AssertNotBlank(),])
+    "name" = new FieldType([new AssertNotBlank()])
     "option" = new FieldType([new AssertNotBlank()])
     "address" = new FormCollection(AddressForm)
     "files" = new FormCollection(FieldType, [

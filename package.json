@@ -5,8 +5,8 @@
   "main": "cdn.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx terser src/index.js --compress --mangle --output dist/js-form-service.min.js",
-    "concat": "concat -o src/test.js src/asserts.js src/event.js"
+    "build": "npx terser index.package.js --compress --mangle --output dist/js-form-service.min.js",
+    "pack": "concat -o index.package.js src/*"
   },
   "repository": {
     "type": "git",

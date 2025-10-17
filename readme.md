@@ -9,6 +9,19 @@
 php -S 127.0.0.1:80
 ```
 
+### Packing
+
+Minification of file index.package.js to dist/js-form-service.min.js
+
+```
+npm run build
+```
+
+Concat files src/ to index.package.js 
+
+```
+npm run concat
+```
 
 ### Example build form
 

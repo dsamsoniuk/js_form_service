@@ -325,10 +325,6 @@ class FormErrorService extends FormErrorAbstract {
 }
 
 
-
-/**
- * Generator szablonow oraz nadpisywanie wartosci np. {+wartosc+}
- */
 class TemplateServiceAbstract {
     constructor() {
         if (typeof this.render !== 'function') {
