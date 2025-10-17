@@ -62,28 +62,37 @@ http://localhost/server.php?a=3&b=6
  
  <script src="js/utils.js"></script> 
  <script src="js/asserts.js"></script> 
- <script src="js/template.js"></script> 
- <script src="js/form_service.js"></script> 
+ <script src="js/event.js"></script> 
+ <script src="js/template_builder.js"></script> 
+ <script src="js/form_builder.js"></script> 
 
 <script>
+
+
+
 
 class AddressForm extends FormAbstract {
     "phone" = new FieldType([new AssertNotBlank()])
     "email" = new FieldType([new AssertNotBlank()])
 }
 class CustomerForm extends FormAbstract {
-    "id"        = new FieldType([new AssertNotBlank('This field cant be empty !!!')])
-    "name"      = new FieldType([
-        new AssertNotBlank('This field cant be empty !!!'),
-        new AssertNotBlank('This fielrtrtr!')
+    "id" = new FieldType([
+        new AssertNotBlank('Custom error example')
     ])
-    "address"   = new FormCollection(AddressForm) 
-    "files"     = new FormCollection(FieldType, [new AssertNotBlank('This field cant be empty !!!')]) 
+    "name" = new FieldType([
+        new AssertNotBlank(),
+        new AssertNotBlank()
+    ])
+    "address" = new FormCollection(AddressForm) 
+    "files" = new FormCollection(FieldType, [
+        new AssertNotBlank()
+    ]) 
 }
-
-class CustomForm extends FormAbstract {
+class CustomerFormBuilder extends FormAbstract {
     "customer" = new CustomerForm()
 }
+
+
 
 
 class ClonElementsEvent extends EventAbstract {
@@ -92,56 +101,64 @@ class ClonElementsEvent extends EventAbstract {
      */
     constructor(templateService){
         super()
-        this.templateService = templateService
         this.index = 0
+        this.exec = this.exec.bind(this); // bind all class, instead only function
+        this.templateService = templateService
     }
     exec(){
-        const template = this.templateService.render({
-            name: 'test_',
-            index: this.index,
-        })
         const container = document.getElementById('cloned-box')
-        container.append(template)
+        const params = { index: this.index }
+        const template = this.templateService.render(params)
 
+        container.append(template)
         this.index++;
     }
     init(){
-        this.exec = this.exec.bind(this);
-        document.getElementById("cloneButton").addEventListener("click", this.exec)
+        const clonBtn = document.getElementById("cloneButton")
+        const prototype = document.getElementsByTagName('protptyp-field')[0]
+
+        this.templateService.setPrototype(prototype)
+        clonBtn.addEventListener("click", this.exec)
     }
 }
 
 class SubmitFormEvent extends EventAbstract {
-
-    constructor(form, formElement, formMapper, formErrorService, formValidatorService){
+    constructor(
+        form, 
+        formElement, 
+        formMapper, 
+        formErrorService, 
+        formValidatorService
+    ){
         super()
         this.form = form
         this.formElement = formElement
         this.formMapper = formMapper
-        this.formErrorService = formErrorService
-        this.formValidatorService = formValidatorService
+        this.errorService = formErrorService
+        this.formValidator = formValidatorService
+        this.exec = this.exec.bind(this); // bind all class, instead only function
     }
     exec(e){
         e.preventDefault()
 
         const formData = new FormData(this.formElement)
-        this.form =  this.formMapper.setFormData(this.form, formData)
 
-        this.formErrorService.clear(this.formElement)
+        this.form = this.formMapper.setFormData(this.form, formData)
+        this.errorService.clear(this.formElement)
            
-        if (this.formValidatorService.validate(this.form)) {
+        if (this.formValidator.validate(this.form)) {
             console.log('Formularz poprawny')
             return
         } else {
-            print('Nie waliduje')
+            console.log('Formularz nie poprawny')
         }
-        console.log(this.form)
+        // console.log(this.form)
 
-        this.formErrorService.showErrors(this.form, this.formElement)
+        this.errorService.showErrors(this.form, this.formElement)
     }
     init(){
-        this.exec = this.exec.bind(this);
-        document.getElementById("formSubmit").addEventListener("click", this.exec)
+        const submit = document.getElementById("formSubmit")
+        submit.addEventListener("click", this.exec)
     }
 }
 
@@ -149,17 +166,13 @@ class SubmitFormEvent extends EventAbstract {
 
 /** INIT */
 document.addEventListener("DOMContentLoaded", (event) => { 
-
     const formElement = document.querySelector('form')
 
-    const form = new CustomForm()
-
-    const prototype = document.getElementsByTagName('protptyp-field')[0]
-    const templateService = new TemplateService(prototype)
-
-    const clone = new ClonElementsEvent(templateService)
-    clone.init()
+    const form = new CustomerFormBuilder()
+    const clone = new ClonElementsEvent(new TemplateService())
     const submit = new SubmitFormEvent(form, formElement, new FormMapper(), new FormErrorService(), new FormValidator())
+
+    clone.init()
     submit.init()
 });
 

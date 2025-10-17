@@ -14,16 +14,6 @@ class TemplateServiceAbstract {
 class TemplateService extends TemplateServiceAbstract {
 
     /**
-     * @param {object} prototype 
-     */
-    constructor(prototype){
-        super()
-        this.template = prototype.cloneNode(true)
-        this.template.style = ''
-        prototype.remove()
-    }
-
-    /**
      * Szukaj po nazwie z klamrami, przyklad {{name}} bedzie zastapiony przez wartosc np. 13
      * @param {string} key 
      * @returns 
@@ -64,6 +54,11 @@ class TemplateService extends TemplateServiceAbstract {
         });
 
         return root
+    }
+    setPrototype(prototype){
+        this.template = prototype.cloneNode(true)
+        this.template.style = ''
+        prototype.remove()
     }
     cloneTemplate(){
         return this.template.cloneNode(true)

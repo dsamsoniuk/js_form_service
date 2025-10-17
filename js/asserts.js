@@ -16,13 +16,12 @@ class AssertAbstract {
 
 /** Assert - Not empty field */
 class AssertNotBlank extends AssertAbstract {
-    message = 'This field can not be empty'
     /**
      * @param {string} message 
      */
     constructor(message){
         super()
-        this.message = message ?? this.message
+        this.message = message ?? 'This field can not be empty'
     }
     /**
      * @param {string} value
