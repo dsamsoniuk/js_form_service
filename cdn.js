@@ -3,32 +3,11 @@ class AssertAbstract {
     /**
      * @property {string} message
      */
-    message = ''
-    constructor() {
+    constructor(message) {
+        this.message = message
         if (typeof this.validate !== 'function') {
             throw new Error("Class must implement method 'validate'");
         }
-        if (typeof this.getMessage !== 'function') {
-            throw new Error("Class must implement method 'getMessage'");
-        }
-    }
-}
-
-/** Assert - Not empty field */
-class AssertNotBlank extends AssertAbstract {
-    /**
-     * @param {string} message 
-     */
-    constructor(message){
-        super()
-        this.message = message ?? 'This field can not be empty'
-    }
-    /**
-     * @param {string} value
-     * @return {boolean}
-     */
-    validate(value){
-        return value === null || value === '' || value === undefined ? false : true
     }
     /**
      * @return {string}
@@ -38,15 +17,32 @@ class AssertNotBlank extends AssertAbstract {
     }
 }
 
-/** Assert - file required field */
+/** Assert - Not empty field */
+class AssertNotBlank extends AssertAbstract {
+    /**
+     * @param {string} message 
+     */
+    constructor(message = 'This field can not be empty'){
+        super(message)
+    }
+    /**
+     * @param {File} value
+     * @return {boolean}
+     */
+    validate(value){
+        return value === null || value === '' || value === undefined ? false : true
+    }
+}
+
+/** Assert - Not empty field */
 class AssertFileRequired extends AssertAbstract {
     /**
      * @param {string} message 
      */
-    constructor(message, messageFormat, allowFormats){
-        super()
-        this.message = message ?? 'This file is required'
-        this.messageFormat = messageFormat ?? 'Wrong format file, allowed: ' + allowFormats.join(', ')
+    constructor(message = 'This file is required', messageFormat = '', allowFormats = []){
+        super(message)
+
+        this.messageFormat = messageFormat ?? 'Wrong format file'
         this.allowFormats = allowFormats ?? []
     }
     /**
@@ -67,12 +63,6 @@ class AssertFileRequired extends AssertAbstract {
             return false
         }
         return true
-    }
-    /**
-     * @return {string}
-     */
-    getMessage() {
-        return this.message
     }
 }
 

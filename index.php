@@ -161,12 +161,12 @@ class SubmitFormEvent extends EventAbstract {
 
         this.form = this.formMapper.setFormData(this.form, formData)
         this.errorService.clear(this.formElement)
-           console.log(this.form)
+        //    console.log(this.form)
         if (this.formValidator.validate(this.form)) {
-            console.log('Formularz poprawny')
+            console.log('Correct form data')
             return
         } else {
-            console.log('Formularz nie poprawny')
+            console.log('Uncorrect form data')
         }
 
         this.errorService.showErrors(this.form, this.formElement)
