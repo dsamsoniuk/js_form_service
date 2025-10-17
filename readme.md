@@ -1,5 +1,5 @@
 
-# Przykład obsługi formularza po stronei frontend
+# Library js form builder with validator and cloning parts
 
 ### Obsluga formularza w vanilly js, walidacja prototypy pol - calosc napisana objektowo 
 
