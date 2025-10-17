@@ -5,56 +5,64 @@
 </head>
 <body>
     
-<h1>front</h1>
-http://localhost/server.php?a=3&b=6
-
-
-<!-- <form action="/server.php" name="customer">
-    <input type="text" name="customer[id]" id="">
-    <input type="text" name="customer[address1][][phone1]" id="">
-    <input type="text" name="customer[address1][][email]" id="">
-    <input type="text" name="customer[address2][][phone1]" id="">
-    <input type="text" name="customer[address2][][email]" id="">
-</form> -->
+<h1>Example form walidator</h1>
 
 <form action="/server.php" name="customer">
+    <h3>Common data</h3>
     <div>
-        id:<input id="customerId" type="number" name="customer[id]" id="" value="234">
+        <label for="">id</label>
+        <input id="customerId" type="number" name="customer[id]" id="" value="234">
     </div>
     <br>
     <div>
-        name:<input id="customerName" type="text" name="customer[name]" id="">
+        <label for="">name</label>
+        <input id="customerName" type="text" name="customer[name]" id="">
     </div>
-    <br>
-    <input id="customerA" type="text" name="a" id="">
-    <br>
+
+    <h3>Address</h3>
+
+
     <div>
-        <input id="customerAddressPhone" type="text" name="customer[address][0][phone]" id="" value="334455">
-        <input id="customerAddressPhoneee" type="text" name="customer[address][0][email]" id="" value="334455">
-    </div>
-    <div>
+        <label for="">Address 1</label>
         <div>
+            <label for="">email</label>
+            <input id="customerC" type="text" name="customer[address][1][email]" id="" value="jacek@pp.pl">
+        </div>
+        <div>
+            <label for="">phone</label>
+            <input id="customerC" type="text" name="customer[address][1][phone]" id="" value="333">
+        </div>
+    </div>
+    <br>
+    <br>
+    <div>
+        <label for="">Address 2</label>
+
+        <div>
+            <label for="">email</label>
             <input id="customerC" type="text" name="customer[address][4][email]" id="" value="jacek@pp.pl">
         </div>
         <div>
-        <input id="customerC" type="text" name="customer[address][4][phone]" id="" value="333">
+            <label for="">phone</label>
+            <input id="customerC" type="text" name="customer[address][4][phone]" id="" value="333">
         </div>
     </div>
 
-<br>
-    <button type="button" id="cloneButton">dodaj pole</button><br>
+    <h3>Files</h3>
+
+    <button type="button" id="cloneButton">Attache file</button><br>
 
     <protptyp-field style="display:none">
-        <div class="" style="display:flex">
-            <div>{{index}}</div>
-            <div>file</div><input type="text" name="customer[files][{{index}}]" value="">
+        <label>File ({{index}}):</label>
+        <div>
+            <input type="text" name="customer[files][{{index}}]" value="">
         </div>
-        <hr>-----
     </protptyp-field>
 
 <br>
     <div id="cloned-box"></div>
-    <button id="formSubmit" type="submit">Wyslij</button>
+    <br>
+    <button id="formSubmit" type="submit">Send data</button>
 </form>
 
 
@@ -152,7 +160,6 @@ class SubmitFormEvent extends EventAbstract {
         } else {
             console.log('Formularz nie poprawny')
         }
-        // console.log(this.form)
 
         this.errorService.showErrors(this.form, this.formElement)
     }

@@ -8,3 +8,55 @@
 ```
 php -S 127.0.0.1:80
 ```
+
+
+### Example build form
+
+```js
+class AddressForm extends FormAbstract {
+    "phone" = new FieldType([new AssertNotBlank()])
+    "email" = new FieldType([new AssertNotBlank()])
+}
+class CustomerForm extends FormAbstract {
+    "id" = new FieldType([
+        new AssertNotBlank('Custom error example')
+    ])
+    "name" = new FieldType([
+        new AssertNotBlank(),
+        new AssertNotBlank()
+    ])
+    "address" = new FormCollection(AddressForm) 
+    "files" = new FormCollection(FieldType, [
+        new AssertNotBlank()
+    ]) 
+}
+class CustomerFormBuilder extends FormAbstract {
+    "customer" = new CustomerForm()
+}
+```
+
+### Example how validate form
+
+```js
+const formElement = document.querySelector('form')
+const formData = new FormData(formElement)
+
+const form = new CustomerFormBuilder()
+
+const formMapper = new FormMapper()
+const formError = new FormErrorService()
+const formValidator = new FormValidator()
+
+form = formMapper.setFormData(form, formData)
+
+formError.clear(formElement)
+    
+if (formValidator.validate(form)) {
+    console.log('Ok')
+    return
+} else {
+    console.log('Errors')
+}
+
+formError.showErrors(form, formElement)
+```
