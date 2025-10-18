@@ -94,12 +94,12 @@
 
  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>  -->
  
- <script src="src/asserts.js"></script> 
+ <!-- <script src="src/asserts.js"></script> 
  <script src="src/event.js"></script> 
  <script src="src/template_builder.js"></script> 
- <script src="src/form_builder.js"></script> 
+ <script src="src/form_builder.js"></script>  -->
 
- <!-- <script src="js-form-service.js"></script>  -->
+ <script src="js-form-service.js"></script> 
  <!-- <script src="dist/js-form-service.min.js"></script>  -->
 
 
