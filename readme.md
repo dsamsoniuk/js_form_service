@@ -73,6 +73,16 @@ formError.showErrors(form, formElement)
 ```
 
 
+### Available asserts
+
+```js
+    AssertNotBlank
+    AssertEmail
+    AssertFileRequired
+    AssertNumber: message, min, max, messageMin, messageMax
+    AssertLength: min, max, messageMin, messageMax
+```
+
 ### Custom assert create
 
 Required only `extends AssertAbstract`

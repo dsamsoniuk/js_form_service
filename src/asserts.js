@@ -18,9 +18,6 @@ class AssertAbstract {
 }
 
 
-
-
-/** Assert - Not empty field */
 class AssertNotBlank extends AssertAbstract {
     /**
      * @param {string} message 
@@ -38,7 +35,92 @@ class AssertNotBlank extends AssertAbstract {
     }
 }
 
-/** Assert - Not empty field */
+
+class AssertNumber extends AssertAbstract {
+    /**
+     * 
+     * @param {string} message 
+     * @param {number} min 
+     * @param {number} max 
+     * @param {string} messageMin 
+     * @param {string} messageMax 
+     */
+    constructor(message, min, max, messageMin, messageMax){
+        message = message ?? 'This field must be number'
+        super(message)
+        this.min = min ?? null
+        this.messageMin = messageMin ?? 'Number is too small'
+        this.max = max ?? null
+        this.messageMax = messageMax ?? 'Number is too large'
+    }
+    /**
+     * @param {string} value
+     * @return {boolean}
+     */
+    validate(value){
+        if (/^\d+$/.test(value) === false) {
+            return false
+        }
+        if (this.min && this.min > value) {
+            this.message = this.messageMin
+            return false
+        }
+        if (this.max && this.max < value) {
+            this.message = this.messageMax
+            return false
+        }
+        return true
+    }
+}
+class AssertLength extends AssertAbstract {
+    /**
+     * 
+     * @param {string} message 
+     * @param {number} min 
+     * @param {number} max 
+     * @param {string} messageMin 
+     * @param {string} messageMax 
+     */
+    constructor(min, max, messageMin, messageMax){
+        super()
+        this.min = min ?? null
+        this.messageMin = messageMin ?? 'Text is too small'
+        this.max = max ?? null
+        this.messageMax = messageMax ?? 'Text is too large'
+    }
+    /**
+     * @param {string} value
+     * @return {boolean}
+     */
+    validate(value){
+        if (this.min && this.min > value.length) {
+            this.message = this.messageMin
+            return false
+        }
+        if (this.max && this.max < value.length) {
+            this.message = this.messageMax
+            return false
+        }
+        return true
+    }
+}
+class AssertEmail extends AssertAbstract {
+    /**
+     * @param {string} message 
+     */
+    constructor(message){
+        message = message ?? 'Email is incorrect'
+        super(message)
+    }
+    /**
+     * @param {string} value
+     * @return {boolean}
+     */
+    validate(value){
+       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+}
+
 class AssertFileRequired extends AssertAbstract {
     /**
      * @param {string} message 

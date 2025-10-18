@@ -112,9 +112,12 @@ class AddressForm extends FormAbstract {
 }
 class CustomerForm extends FormAbstract {
     "id" = new FieldType([
-        new AssertNotBlank('Custom error example')
+        new AssertNumber(null, 5, 10)
     ])
-    "name" = new FieldType([new AssertNotBlank()])
+    "name" = new FieldType([
+        new AssertEmail(),
+        new AssertLength(5,16),
+    ])
     "option" = new FieldType([new AssertNotBlank()])
     "address" = new FormCollection(AddressForm)
     "files" = new FormCollection(FieldType, [
