@@ -344,7 +344,7 @@ class TemplateService extends TemplateServiceAbstract {
      * @returns 
      */
     search(key){
-        return `{+${key}+}`
+        return `{@${key}@}`
     }
 
     /**
@@ -380,6 +380,10 @@ class TemplateService extends TemplateServiceAbstract {
 
         return root
     }
+    /**
+     * 
+     * @param {document} prototype 
+     */
     setPrototype(prototype){
         this.template = prototype.cloneNode(true)
         this.template.style = ''

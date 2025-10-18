@@ -41,7 +41,7 @@ class CustomerForm extends FormAbstract {
         new AssertFileRequired(null, null, ['image/png', 'image/jpg']),
     ]) 
 }
-class CustomerFormBuilder extends FormAbstract {
+class CustomerFormBuild extends FormAbstract {
     "customer" = new CustomerForm()
 }
 ```
@@ -52,7 +52,7 @@ class CustomerFormBuilder extends FormAbstract {
 const formElement = document.querySelector('form')
 const formData = new FormData(formElement)
 
-const form = new CustomerFormBuilder()
+const form = new CustomerFormBuild()
 
 const formMapper = new FormMapper()
 const formError = new FormErrorService()

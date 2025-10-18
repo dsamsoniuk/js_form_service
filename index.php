@@ -61,29 +61,31 @@
 
     <button type="button" id="cloneButton">Attache file</button><br>
 
-    <protptyp-field style="display:none">
+    <div id="prototyp-field-file" class="prototype-box" style="display:none">
         <label>File ({@index@}):</label>
-        <div>
-            <input type="file" name="customer[files][{@index@}]" value="">
+        <div style="display:flex">
+            <div><input type="file" name="customer[files][{@index@}]" value=""></div>
+            <div> <button type="button" class="delete-proto">-</button></div>
         </div>
-    </protptyp-field>
+    </div>
 
-<br>
+    <br>
     <div id="cloned-box"></div>
+
     <br>
     <button id="formSubmit" type="submit">Send data</button>
 </form>
 
 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>  -->
  
- <!-- <script src="src/asserts.js"></script> 
+ <script src="src/asserts.js"></script> 
  <script src="src/event.js"></script> 
  <script src="src/template_builder.js"></script> 
- <script src="src/form_builder.js"></script>  -->
+ <script src="src/form_builder.js"></script> 
 
- <!-- <script src="index.package.js"></script>  -->
- <script src="dist/js-form-service.min.js"></script> 
+ <!-- <script src="js-form-service.js"></script>  -->
+ <!-- <script src="dist/js-form-service.min.js"></script>  -->
 
 
 <script>
@@ -103,72 +105,83 @@ class CustomerForm extends FormAbstract {
         new AssertFileRequired(null, null, ['image/png', 'image/jpg']),
     ]) 
 }
-class CustomerFormBuilder extends FormAbstract {
+class CustomerFormBuild extends FormAbstract {
     "customer" = new CustomerForm()
 }
 
 
 
-
-class ClonElementsEvent extends EventAbstract {
+class AddPrototypeEvent extends EventAbstract {
     /**
      * @param {TemplateService} templateService 
      */
-    constructor(templateService){
+    constructor(templateService, clonBtn, prototype, container, params){
         super()
         this.index = 0
-        this.exec = this.exec.bind(this); // bind all class, instead only function
+        // bind all class, instead only function
+        this.exec = this.exec.bind(this);
         this.templateService = templateService
+        this.clonBtn = clonBtn
+        this.prototype = prototype
+        this.container = container
+        this.params = params ?? {}
     }
-    exec(){
-        const container = document.getElementById('cloned-box')
-        const params = { index: this.index }
+    exec(event){
+        const params = Object.assign({ index: this.index }, this.params)
         const template = this.templateService.render(params)
-
-        container.append(template)
+        this.container.append(template)
         this.index++;
     }
     init(){
-        const clonBtn = document.getElementById("cloneButton")
-        const prototype = document.getElementsByTagName('protptyp-field')[0]
+        this.templateService.setPrototype(this.prototype)
+        this.clonBtn.addEventListener("click", this.exec)
+    }
+}
 
-        this.templateService.setPrototype(prototype)
-        clonBtn.addEventListener("click", this.exec)
+class DeletePrototypeEvent extends EventAbstract {
+    exec(event){
+        if (event.target.matches('.delete-proto')) {
+            event.target.closest('.prototype-box').remove()
+        }
+    }
+    init(){
+        document.addEventListener('click', this.exec);
     }
 }
 
 class SubmitFormEvent extends EventAbstract {
     constructor(
-        form, 
-        formElement, 
+        formClass, 
         formMapper, 
         formErrorService, 
-        formValidatorService
+        formValidatorService,
+        formElement
     ){
         super()
-        this.form = form
+        this.formClass = formClass
         this.formElement = formElement
         this.formMapper = formMapper
         this.errorService = formErrorService
         this.formValidator = formValidatorService
         this.exec = this.exec.bind(this); // bind all class, instead only function
     }
-    exec(e){
-        e.preventDefault()
+    exec(event){
+        event.preventDefault()
 
         const formData = new FormData(this.formElement)
+        let form = new this.formClass()
 
-        this.form = this.formMapper.setFormData(this.form, formData)
+        form = this.formMapper.setFormData(form, formData)
         this.errorService.clear(this.formElement)
-        //    console.log(this.form)
-        if (this.formValidator.validate(this.form)) {
+        // console.log(form)
+        if (this.formValidator.validate(form)) {
             console.log('Correct form data')
             return
         } else {
             console.log('Uncorrect form data')
         }
 
-        this.errorService.showErrors(this.form, this.formElement)
+        this.errorService.showErrors(form, this.formElement)
     }
     init(){
         const submit = document.getElementById("formSubmit")
@@ -180,14 +193,28 @@ class SubmitFormEvent extends EventAbstract {
 
 /** INIT */
 document.addEventListener("DOMContentLoaded", (event) => { 
-    const formElement = document.querySelector('form')
 
-    const form = new CustomerFormBuilder()
-    const clone = new ClonElementsEvent(new TemplateService())
-    const submit = new SubmitFormEvent(form, formElement, new FormMapper(), new FormErrorService(), new FormValidator())
-
+    const clone = new AddPrototypeEvent(
+        new TemplateService(), 
+        document.getElementById("cloneButton"),
+        document.getElementById('prototyp-field-file'),
+        document.getElementById('cloned-box')
+    );
     clone.init()
+
+    const delBtn = new DeletePrototypeEvent()
+    delBtn.init()
+
+    const submit = new SubmitFormEvent(
+        CustomerFormBuild, 
+        new FormMapper(), 
+        new FormErrorService(), 
+        new FormValidator(),
+        document.querySelector('form'), 
+    );
     submit.init()
+
+
 });
 
 </script>
