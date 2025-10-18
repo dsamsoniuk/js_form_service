@@ -33,8 +33,13 @@ class AddressForm extends FormAbstract {
     "email" = new FieldType([new AssertNotBlank()])
 }
 class CustomerForm extends FormAbstract {
-    "id" = new FieldType([new AssertNotBlank('Custom error example')])
-    "name" = new FieldType([new AssertNotBlank(),])
+    "id" = new FieldType([
+        new AssertNumber(null, 5, 10)
+    ])
+    "name" = new FieldType([
+        new AssertEmail(),
+        new AssertLength(5,16),
+    ])
     "option" = new FieldType([new AssertNotBlank()])
     "address" = new FormCollection(AddressForm)
     "files" = new FormCollection(FieldType, [
@@ -104,4 +109,30 @@ class AssertNotBlank extends AssertAbstract {
         return value === null || value === '' || value === undefined ? false : true
     }
 }
+```
+
+
+
+### Example translations
+
+How to send json data to js
+
+```php
+<?php
+    $translations = [
+        'text1' => 'Hello world',
+        'text2' => 'Hi, everyone',
+    ];
+    $json = htmlspecialchars(
+        json_encode($translations), 
+        ENT_QUOTES, 
+        'UTF-8'
+    );
+?>
+<div id="translations-en" style="display:none"><?php echo $json ?></div>
+```
+
+```js
+const translationsEn = JSON.parse(document.getElementById('translations-en').textContent);
+console.log(translationsEn)
 ```
