@@ -4,8 +4,23 @@
 
 </head>
 <body>
-    
+
+<?php
+    $translations = [
+        'text1' => 'Hello world',
+        'text2' => 'Hi, everyone',
+    ];
+    $json = htmlspecialchars(
+        json_encode($translations), 
+        ENT_QUOTES, 
+        'UTF-8'
+    );
+?>
+<div id="translations-en" style="display:none"><?php echo $json ?></div>
+
+
 <h1>Example form walidator</h1>
+
 
 <form action="/server.php" name="customer">
     <h3>Common data</h3>
@@ -89,6 +104,7 @@
 
 
 <script>
+
 
 class AddressForm extends FormAbstract {
     "phone" = new FieldType([new AssertNotBlank()])
@@ -193,6 +209,9 @@ class SubmitFormEvent extends EventAbstract {
 
 /** INIT */
 document.addEventListener("DOMContentLoaded", (event) => { 
+
+    // const translationsEn = JSON.parse(document.getElementById('translations-en').textContent);
+    // console.log(translationsEn)
 
     const clone = new AddPrototypeEvent(
         new TemplateService(), 

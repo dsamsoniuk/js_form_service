@@ -17,6 +17,9 @@ class AssertAbstract {
     }
 }
 
+
+
+
 /** Assert - Not empty field */
 class AssertNotBlank extends AssertAbstract {
     /**
