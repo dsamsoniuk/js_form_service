@@ -104,6 +104,8 @@ class AssertLength extends AssertAbstract {
         return true
     }
 }
+//An example class
+/** AssertEmail description */
 class AssertEmail extends AssertAbstract {
     /**
      * @param {string} message 
